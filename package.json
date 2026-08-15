@@ -1,0 +1,11 @@
+{
+  "name": "mly-video-render-service",
+  "version": "1.0.0",
+  "description": "FFmpeg render microservice - image + music -> 10s MP4 for Mandy's Laundry",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
+  }
+}
