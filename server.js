@@ -30,12 +30,13 @@ app.post('/render', async (req, res) => {
       await downloadFile(audioUrl, audioPath);
     }
 
-    const safeText = (ctaText || '').replace(/:/g, '\\:').replace(/'/g, "\\\\'");
-    const drawtext = "drawtext=text='" + safeText + "':fontcolor=white:fontsize=42:box=1:boxcolor=black@0.55:boxborderw=16:x=(w-text_w)/2:y=h-th-60";
+    const safeText = (ctaText || '').trim().replace(/:/g, '\\:').replace(/'/g, "\\\\'");
+    const drawtext = "drawtext=text='" + safeText + "':font=DejaVu Sans:fontcolor=white:fontsize=42:box=1:boxcolor=black@0.55:boxborderw=16:x=(w-text_w)/2:y=h-th-60";
+    const videoFilter = safeText ? ('scale=1080:1080,' + drawtext) : 'scale=1080:1080';
 
     const args = ['-y', '-loop', '1', '-i', imgPath];
     if (audioPath) args.push('-i', audioPath);
-    args.push('-t', String(duration), '-vf', 'scale=1080:1080,' + drawtext, '-c:v', 'libx264', '-pix_fmt', 'yuv420p');
+    args.push('-t', String(duration), '-vf', videoFilter, '-c:v', 'libx264', '-pix_fmt', 'yuv420p');
     if (audioPath) { args.push('-c:a', 'aac', '-shortest'); } else { args.push('-an'); }
     args.push(outPath);
 
